@@ -34,7 +34,9 @@ public class ComprobantesController : ControllerBase
             FechaInicio = filtro.FechaInicio,
             FechaFin = filtro.FechaFin,
             Serie = filtro.Serie,
-            RucReceptor = filtro.RucReceptor
+            RucReceptor = filtro.RucReceptor,
+            Tipo = filtro.Tipo,
+            Estado = filtro.Estado
         };
 
         var comprobantes = await _mediator.Send(query);

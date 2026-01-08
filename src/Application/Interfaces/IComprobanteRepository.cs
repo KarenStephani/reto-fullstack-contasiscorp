@@ -9,7 +9,9 @@ public interface IComprobanteRepository
         DateTime? fechaInicio = null,
         DateTime? fechaFin = null,
         string? serie = null,
-        string? rucReceptor = null
+        string? rucReceptor = null,
+        string? tipo = null,
+        string? estado = null
     );
     Task AddAsync(Comprobante comprobante);
     void Update(Comprobante comprobante);

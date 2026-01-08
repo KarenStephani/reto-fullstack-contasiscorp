@@ -6,8 +6,14 @@
 **Usuario:** `postgres`
 **Password:** `root`
 **Host:** `localhost`
-**Puerto:** `5433`
+**Puerto:** `5432`
 
+## Cambios Importantes en el Frontend
+
+El frontend ha sido actualizado para conectarse al backend de .NET API en lugar de Supabase directamente:
+- Removida dependencia de `@supabase/supabase-js`
+- Archivo `supabase.ts` eliminado
+- `api.ts` reescrito para usar `fetch` y llamar a la API REST de .NET en `http://localhost:5000`
 
 ## Archivos Actualizados
 

@@ -1,23 +1,29 @@
 export interface ComprobanteItem {
+  codigoProducto?: string
   descripcion: string
   cantidad: number
   precioUnitario: number
+  unidadMedida?: string
   subtotal?: number
 }
 
 export interface CreateComprobanteDto {
-  tipo: string
+  tipo: number
   serie: string
+  numero: string
+  fechaEmision: string
   rucEmisor: string
   razonSocialEmisor: string
   rucReceptor?: string
   razonSocialReceptor?: string
+  moneda?: string
+  observaciones?: string
   items: ComprobanteItem[]
 }
 
 export interface ComprobanteResponse {
   id: string
-  tipo: string
+  tipo: string | number
   serie: string
   numero: number
   fechaEmision: string
@@ -28,19 +34,19 @@ export interface ComprobanteResponse {
   subTotal: number
   igv: number
   total: number
-  estado: string
+  estado: string | number
   items: ComprobanteItem[]
 }
 
 export interface ComprobanteListItem {
   id: string
-  tipo: string
+  tipo: string | number
   serie: string
   numero: number
   fechaEmision: string
   rucReceptor: string
   total: number
-  estado: string
+  estado: string | number
 }
 
 export interface PaginatedResponse<T> {

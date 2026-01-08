@@ -1,32 +1,25 @@
-/*
-  Sistema de Comprobantes Electrónicos - Contasiscorp
-  Script para PostgreSQL Local
-
-  NOTA: Este script está adaptado para PostgreSQL vanilla sin Supabase.
-  Los campos de usuario ahora aceptan valores de texto como "system".
-*/
-
--- Crear la base de datos ContasiscorpBD (ejecutar como superusuario)
--- CREATE DATABASE "ContasiscorpBD"
---   WITH
---   OWNER = postgres
---   ENCODING = 'UTF8'
---   LC_COLLATE = 'en_US.utf8'
---   LC_CTYPE = 'en_US.utf8'
---   TABLESPACE = pg_default
---   CONNECTION LIMIT = -1;
-
--- Conectarse a la base de datos ContasiscorpBD antes de continuar
+-- Conectarse a la base de datos ContasiscorpBD primero
 -- \c ContasiscorpBD
 
 -- Crear extensión para UUIDs
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
--- Eliminar tablas si existen (para recrear)
+-- Eliminar tablas si existen (para desarrollo)
 DROP TABLE IF EXISTS comprobante_items CASCADE;
 DROP TABLE IF EXISTS comprobantes CASCADE;
+DROP TABLE IF EXISTS usuarios CASCADE;
 
--- Crear tabla de comprobantes
+-- Crear tabla de usuarios (básica para relaciones)
+CREATE TABLE usuarios (
+  id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+  email text UNIQUE NOT NULL,
+  password_hash text NOT NULL,
+  nombre text NOT NULL,
+  created_at timestamptz NOT NULL DEFAULT now(),
+  updated_at timestamptz
+);
+
+-- Crear tabla de comprobantes (usuario_creacion es opcional)
 CREATE TABLE comprobantes (
   id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
   serie text NOT NULL,
@@ -45,8 +38,8 @@ CREATE TABLE comprobantes (
   observaciones text,
   fecha_creacion timestamptz NOT NULL DEFAULT now(),
   fecha_modificacion timestamptz,
-  usuario_creacion text,
-  usuario_modificacion text,
+  usuario_creacion uuid REFERENCES usuarios(id),
+  usuario_modificacion uuid REFERENCES usuarios(id),
   UNIQUE(serie, numero)
 );
 
@@ -72,6 +65,7 @@ CREATE INDEX idx_comprobante_items_comprobante_id ON comprobante_items(comproban
 -- Comentarios descriptivos
 COMMENT ON TABLE comprobantes IS 'Tabla principal de comprobantes electrónicos';
 COMMENT ON TABLE comprobante_items IS 'Detalle de items/líneas de cada comprobante';
+COMMENT ON TABLE usuarios IS 'Tabla de usuarios del sistema';
 
 COMMENT ON COLUMN comprobantes.tipo IS '1=Factura, 2=Boleta, 3=NotaCredito, 4=NotaDebito, 5=Recibo, 6=GuiaRemision';
 COMMENT ON COLUMN comprobantes.estado IS '1=Borrador, 2=Vigente/Emitido, 3=Anulado, 4=Rechazado';

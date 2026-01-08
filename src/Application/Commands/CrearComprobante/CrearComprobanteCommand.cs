@@ -11,11 +11,11 @@ public class CrearComprobanteCommand : IRequest<CrearComprobanteResult>
     public DateTime FechaEmision { get; set; }
     public string RucEmisor { get; set; } = string.Empty;
     public string RazonSocialEmisor { get; set; } = string.Empty;
-    public string RucReceptor { get; set; } = string.Empty;
-    public string RazonSocialReceptor { get; set; } = string.Empty;
+    public string? RucReceptor { get; set; }
+    public string? RazonSocialReceptor { get; set; }
     public string Moneda { get; set; } = "PEN";
     public string? Observaciones { get; set; }
-    public string UsuarioCreacion { get; set; } = string.Empty;
+    public string UsuarioCreacion { get; set; } = "system";
     public List<CrearComprobanteItemDto> Items { get; set; } = new();
 }
 

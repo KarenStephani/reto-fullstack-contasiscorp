@@ -9,4 +9,6 @@ public class ListarComprobantesQuery : IRequest<List<ComprobanteDto>>
     public DateTime? FechaFin { get; set; }
     public string? Serie { get; set; }
     public string? RucReceptor { get; set; }
+    public string? Tipo { get; set; }
+    public string? Estado { get; set; }
 }

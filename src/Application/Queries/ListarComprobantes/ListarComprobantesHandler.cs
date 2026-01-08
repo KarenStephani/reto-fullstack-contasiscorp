@@ -19,7 +19,9 @@ public class ListarComprobantesHandler : IRequestHandler<ListarComprobantesQuery
             request.FechaInicio,
             request.FechaFin,
             request.Serie,
-            request.RucReceptor
+            request.RucReceptor,
+            request.Tipo,
+            request.Estado
         );
 
         return comprobantes.Select(c => new ComprobanteDto

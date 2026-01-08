@@ -12,8 +12,8 @@ public class Comprobante
     public DateTime FechaEmision { get; set; }
     public string RucEmisor { get; set; } = string.Empty;
     public string RazonSocialEmisor { get; set; } = string.Empty;
-    public string RucReceptor { get; set; } = string.Empty;
-    public string RazonSocialReceptor { get; set; } = string.Empty;
+    public string? RucReceptor { get; set; }
+    public string? RazonSocialReceptor { get; set; }
     public decimal MontoTotal { get; set; }
     public decimal MontoIGV { get; set; }
     public decimal MontoSubtotal { get; set; }
@@ -21,7 +21,7 @@ public class Comprobante
     public string? Observaciones { get; set; }
     public DateTime FechaCreacion { get; set; }
     public DateTime? FechaModificacion { get; set; }
-    public string UsuarioCreacion { get; set; } = string.Empty;
+    public string UsuarioCreacion { get; set; } = "system";
     public string? UsuarioModificacion { get; set; }
 
     public ICollection<ComprobanteItem> Items { get; set; } = new List<ComprobanteItem>();

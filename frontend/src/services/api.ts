@@ -10,9 +10,6 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'
 
 export const comprobanteService = {
   async getAll(filters: ComprobanteFilters = {}): Promise<PaginatedResponse<ComprobanteListItem>> {
-    const page = filters.page || 1
-    const pageSize = filters.pageSize || 10
-
     const params = new URLSearchParams()
     if (filters.tipo) params.append('tipo', filters.tipo)
     if (filters.estado) params.append('estado', filters.estado)
@@ -37,16 +34,12 @@ export const comprobanteService = {
       estado: item.estado
     }))
 
-    const startIndex = (page - 1) * pageSize
-    const endIndex = startIndex + pageSize
-    const paginatedItems = items.slice(startIndex, endIndex)
-
     return {
-      items: paginatedItems,
+      items: items,
       total: items.length,
-      page,
-      pageSize,
-      totalPages: Math.ceil(items.length / pageSize)
+      page: filters.page || 1,
+      pageSize: filters.pageSize || 10,
+      totalPages: Math.ceil(items.length / (filters.pageSize || 10))
     }
   },
 
@@ -87,21 +80,21 @@ export const comprobanteService = {
       },
       body: JSON.stringify({
         serie: data.serie,
-        numero: 0,
+        numero: data.numero,
         tipo: data.tipo,
-        fechaEmision: new Date().toISOString(),
+        fechaEmision: data.fechaEmision,
         rucEmisor: data.rucEmisor,
         razonSocialEmisor: data.razonSocialEmisor,
-        rucReceptor: data.rucReceptor,
-        razonSocialReceptor: data.razonSocialReceptor,
-        moneda: 'PEN',
-        observaciones: '',
+        rucReceptor: data.rucReceptor || null,
+        razonSocialReceptor: data.razonSocialReceptor || null,
+        moneda: data.moneda || 'PEN',
+        observaciones: data.observaciones || null,
         items: data.items.map(item => ({
-          codigoProducto: 'PROD001',
+          codigoProducto: item.codigoProducto || 'PROD001',
           descripcion: item.descripcion,
           cantidad: item.cantidad,
           precioUnitario: item.precioUnitario,
-          unidadMedida: 'UND'
+          unidadMedida: item.unidadMedida || 'NIU'
         }))
       })
     })

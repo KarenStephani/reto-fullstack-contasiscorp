@@ -41,7 +41,7 @@ public class ComprobanteItemConfiguration : IEntityTypeConfiguration<Comprobante
             .IsRequired();
 
         builder.Property(i => i.SubTotal)
-            .HasColumnName("subtotal")
+            .HasColumnName("sub_total")
             .HasPrecision(18, 2)
             .IsRequired();
 

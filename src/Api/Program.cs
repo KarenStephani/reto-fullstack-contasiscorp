@@ -28,10 +28,18 @@ builder.Services.AddSwaggerGen(options =>
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(connectionString));
+{
+    options.UseNpgsql(connectionString, npgsqlOptions =>
+    {
+        npgsqlOptions.EnableRetryOnFailure(3);
+    });
+    options.EnableSensitiveDataLogging();
+    options.EnableDetailedErrors();
+});
 
 builder.Services.AddMediatR(cfg => {
     cfg.RegisterServicesFromAssembly(typeof(Contasiscorp.Application.Commands.CrearComprobante.CrearComprobanteCommand).Assembly);
+    cfg.AddOpenBehavior(typeof(Contasiscorp.Application.Behaviors.ValidationBehavior<,>));
 });
 
 builder.Services.AddValidatorsFromAssembly(typeof(Contasiscorp.Application.Validators.CrearComprobanteValidator).Assembly);
@@ -47,6 +55,8 @@ builder.Services.AddCors(options =>
               .AllowAnyHeader();
     });
 });
+
+builder.WebHost.UseUrls("http://localhost:5000");
 
 var app = builder.Build();
 
@@ -68,5 +78,17 @@ if (app.Environment.IsDevelopment())
 app.UseCors("AllowAll");
 app.UseAuthorization();
 app.MapControllers();
+
+app.MapGet("/", () => Results.Ok(new
+{
+    name = "Contasiscorp API",
+    version = "1.0",
+    status = "running",
+    endpoints = new
+    {
+        comprobantes = "/api/comprobantes",
+        swagger = "/swagger"
+    }
+}));
 
 app.Run();

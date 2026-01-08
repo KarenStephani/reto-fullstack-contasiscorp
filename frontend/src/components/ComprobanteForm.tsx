@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { comprobanteService } from '../services/api'
 import type { CreateComprobanteDto, ComprobanteItem } from '../types'
+import { TipoComprobante } from '../constants/enums'
 
 interface Props {
   onSuccess: () => void
@@ -9,12 +10,13 @@ interface Props {
 export default function ComprobanteForm({ onSuccess }: Props) {
   const [tipo, setTipo] = useState<'Factura' | 'Boleta'>('Factura')
   const [serie, setSerie] = useState('F001')
+  const [numero, setNumero] = useState('00000001')
   const [rucEmisor, setRucEmisor] = useState('')
   const [razonSocialEmisor, setRazonSocialEmisor] = useState('')
   const [rucReceptor, setRucReceptor] = useState('')
   const [razonSocialReceptor, setRazonSocialReceptor] = useState('')
   const [items, setItems] = useState<ComprobanteItem[]>([
-    { descripcion: '', cantidad: 1, precioUnitario: 0 }
+    { codigoProducto: 'PROD001', descripcion: '', cantidad: 1, precioUnitario: 0, unidadMedida: 'NIU' }
   ])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -26,7 +28,7 @@ export default function ComprobanteForm({ onSuccess }: Props) {
   }
 
   const addItem = () => {
-    setItems([...items, { descripcion: '', cantidad: 1, precioUnitario: 0 }])
+    setItems([...items, { codigoProducto: 'PROD001', descripcion: '', cantidad: 1, precioUnitario: 0, unidadMedida: 'NIU' }])
   }
 
   const removeItem = (index: number) => {
@@ -60,11 +62,18 @@ export default function ComprobanteForm({ onSuccess }: Props) {
     setLoading(true)
 
     const data: CreateComprobanteDto = {
-      tipo,
+      tipo: tipo === 'Factura' ? TipoComprobante.Factura : TipoComprobante.Boleta,
       serie,
+      numero,
+      fechaEmision: new Date().toISOString(),
       rucEmisor,
       razonSocialEmisor,
-      items
+      moneda: 'PEN',
+      items: items.map(item => ({
+        ...item,
+        codigoProducto: item.codigoProducto || 'PROD001',
+        unidadMedida: item.unidadMedida || 'NIU'
+      }))
     }
 
     if (tipo === 'Factura') {
@@ -111,6 +120,17 @@ export default function ComprobanteForm({ onSuccess }: Props) {
               value={serie}
               onChange={(e) => setSerie(e.target.value)}
               placeholder="F001"
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Número</label>
+            <input
+              type="text"
+              value={numero}
+              onChange={(e) => setNumero(e.target.value)}
+              placeholder="00000001"
               required
             />
           </div>

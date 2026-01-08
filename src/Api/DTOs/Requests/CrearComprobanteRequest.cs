@@ -10,8 +10,8 @@ public class CrearComprobanteRequest
     public DateTime FechaEmision { get; set; }
     public string RucEmisor { get; set; } = string.Empty;
     public string RazonSocialEmisor { get; set; } = string.Empty;
-    public string RucReceptor { get; set; } = string.Empty;
-    public string RazonSocialReceptor { get; set; } = string.Empty;
+    public string? RucReceptor { get; set; }
+    public string? RazonSocialReceptor { get; set; }
     public string Moneda { get; set; } = "PEN";
     public string? Observaciones { get; set; }
     public List<CrearComprobanteItemRequest> Items { get; set; } = new();

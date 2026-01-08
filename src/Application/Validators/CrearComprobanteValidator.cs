@@ -1,4 +1,5 @@
 using Contasiscorp.Application.Commands.CrearComprobante;
+using Contasiscorp.Domain.Enums;
 using FluentValidation;
 
 namespace Contasiscorp.Application.Validators;
@@ -25,17 +26,22 @@ public class CrearComprobanteValidator : AbstractValidator<CrearComprobanteComma
 
         RuleFor(x => x.RucReceptor)
             .NotEmpty().WithMessage("El RUC del receptor es requerido")
-            .Length(11).WithMessage("El RUC debe tener 11 dígitos");
+            .Length(11).WithMessage("El RUC debe tener 11 dígitos")
+            .When(x => x.Tipo == TipoComprobante.Factura);
 
         RuleFor(x => x.RazonSocialReceptor)
             .NotEmpty().WithMessage("La razón social del receptor es requerida")
-            .MaximumLength(200).WithMessage("La razón social no puede exceder 200 caracteres");
+            .MaximumLength(200).WithMessage("La razón social no puede exceder 200 caracteres")
+            .When(x => x.Tipo == TipoComprobante.Factura);
 
         RuleFor(x => x.Items)
             .NotEmpty().WithMessage("Debe incluir al menos un item");
 
         RuleForEach(x => x.Items).ChildRules(item =>
         {
+            item.RuleFor(x => x.CodigoProducto)
+                .NotEmpty().WithMessage("El código de producto es requerido");
+
             item.RuleFor(x => x.Descripcion)
                 .NotEmpty().WithMessage("La descripción es requerida");
 

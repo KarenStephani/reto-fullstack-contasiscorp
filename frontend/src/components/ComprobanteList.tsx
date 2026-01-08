@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { comprobanteService } from '../services/api'
 import type { ComprobanteListItem, ComprobanteFilters } from '../types'
+import { getTipoComprobanteText, getEstadoComprobanteText, EstadoComprobante } from '../constants/enums'
 
 export default function ComprobanteList() {
   const [comprobantes, setComprobantes] = useState<ComprobanteListItem[]>([])
@@ -130,34 +131,39 @@ export default function ComprobanteList() {
               </tr>
             </thead>
             <tbody>
-              {comprobantes.map((comprobante) => (
-                <tr key={comprobante.id}>
-                  <td>
-                    <span className={`badge badge-${comprobante.tipo.toLowerCase()}`}>
-                      {comprobante.tipo}
-                    </span>
-                  </td>
-                  <td>{comprobante.serie}-{comprobante.numero}</td>
-                  <td>{formatDate(comprobante.fechaEmision)}</td>
-                  <td>{comprobante.rucReceptor}</td>
-                  <td>S/ {comprobante.total.toFixed(2)}</td>
-                  <td>
-                    <span className={`badge badge-${comprobante.estado.toLowerCase()}`}>
-                      {comprobante.estado}
-                    </span>
-                  </td>
-                  <td>
-                    {comprobante.estado === 'Emitido' && (
-                      <button
-                        className="button button-danger"
-                        onClick={() => handleAnular(comprobante.id)}
-                      >
-                        Anular
-                      </button>
-                    )}
-                  </td>
-                </tr>
-              ))}
+              {comprobantes.map((comprobante) => {
+                const tipoText = getTipoComprobanteText(comprobante.tipo)
+                const estadoText = getEstadoComprobanteText(comprobante.estado)
+
+                return (
+                  <tr key={comprobante.id}>
+                    <td>
+                      <span className={`badge badge-${tipoText.toLowerCase()}`}>
+                        {tipoText}
+                      </span>
+                    </td>
+                    <td>{comprobante.serie}-{comprobante.numero}</td>
+                    <td>{formatDate(comprobante.fechaEmision)}</td>
+                    <td>{comprobante.rucReceptor}</td>
+                    <td>S/ {comprobante.total.toFixed(2)}</td>
+                    <td>
+                      <span className={`badge badge-${estadoText.toLowerCase()}`}>
+                        {estadoText}
+                      </span>
+                    </td>
+                    <td>
+                      {(comprobante.estado === EstadoComprobante.Emitido || estadoText === 'Emitido') && (
+                        <button
+                          className="button button-danger"
+                          onClick={() => handleAnular(comprobante.id)}
+                        >
+                          Anular
+                        </button>
+                      )}
+                    </td>
+                  </tr>
+                )
+              })}
             </tbody>
           </table>
 

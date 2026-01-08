@@ -204,12 +204,22 @@ body {
   font-weight: 500;
 }
 
+.badge-borrador {
+  background-color: #e2e3e5;
+  color: #383d41;
+}
+
 .badge-emitido {
   background-color: #d4edda;
   color: #155724;
 }
 
 .badge-anulado {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.badge-rechazado {
   background-color: #f8d7da;
   color: #721c24;
 }
@@ -222,6 +232,26 @@ body {
 .badge-boleta {
   background-color: #fff3cd;
   color: #856404;
+}
+
+.badge-notacredito {
+  background-color: #d1ecf1;
+  color: #0c5460;
+}
+
+.badge-notadebito {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.badge-recibo {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.badge-guiaremision {
+  background-color: #e2e3e5;
+  color: #383d41;
 }
 
 .filters {

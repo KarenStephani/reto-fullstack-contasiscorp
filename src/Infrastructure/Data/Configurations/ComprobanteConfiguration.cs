@@ -53,13 +53,11 @@ public class ComprobanteConfiguration : IEntityTypeConfiguration<Comprobante>
 
         builder.Property(c => c.RucReceptor)
             .HasColumnName("ruc_receptor")
-            .HasMaxLength(11)
-            .IsRequired();
+            .HasMaxLength(11);
 
         builder.Property(c => c.RazonSocialReceptor)
             .HasColumnName("razon_social_receptor")
-            .HasMaxLength(200)
-            .IsRequired();
+            .HasMaxLength(200);
 
         builder.Property(c => c.MontoTotal)
             .HasColumnName("monto_total")
@@ -95,11 +93,13 @@ public class ComprobanteConfiguration : IEntityTypeConfiguration<Comprobante>
 
         builder.Property(c => c.UsuarioCreacion)
             .HasColumnName("usuario_creacion")
+            .HasColumnType("text")
             .HasMaxLength(100)
-            .IsRequired();
+            .HasDefaultValue("system");
 
         builder.Property(c => c.UsuarioModificacion)
             .HasColumnName("usuario_modificacion")
+            .HasColumnType("text")
             .HasMaxLength(100);
 
         builder.HasMany(c => c.Items)

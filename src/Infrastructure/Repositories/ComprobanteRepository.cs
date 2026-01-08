@@ -1,5 +1,6 @@
 using Contasiscorp.Application.Interfaces;
 using Contasiscorp.Domain.Entities;
+using Contasiscorp.Domain.Enums;
 using Contasiscorp.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,7 +26,9 @@ public class ComprobanteRepository : IComprobanteRepository
         DateTime? fechaInicio = null,
         DateTime? fechaFin = null,
         string? serie = null,
-        string? rucReceptor = null)
+        string? rucReceptor = null,
+        string? tipo = null,
+        string? estado = null)
     {
         var query = _context.Comprobantes
             .Include(c => c.Items)
@@ -42,6 +45,12 @@ public class ComprobanteRepository : IComprobanteRepository
 
         if (!string.IsNullOrEmpty(rucReceptor))
             query = query.Where(c => c.RucReceptor == rucReceptor);
+
+        if (!string.IsNullOrEmpty(tipo) && Enum.TryParse<TipoComprobante>(tipo, out var tipoEnum))
+            query = query.Where(c => c.Tipo == tipoEnum);
+
+        if (!string.IsNullOrEmpty(estado) && Enum.TryParse<EstadoComprobante>(estado, out var estadoEnum))
+            query = query.Where(c => c.Estado == estadoEnum);
 
         return await query
             .OrderByDescending(c => c.FechaEmision)
