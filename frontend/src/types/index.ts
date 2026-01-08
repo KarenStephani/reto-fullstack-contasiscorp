@@ -59,4 +59,5 @@ export interface ComprobanteFilters {
   tipo?: string
   rucReceptor?: string
   estado?: string
+  serie?: string
 }
