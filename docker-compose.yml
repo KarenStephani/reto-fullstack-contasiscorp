@@ -29,7 +29,7 @@ services:
       - "5000:80"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Host=postgres;Database=ContasiscorpBD;Username=postgres;Password=postgres
+      - ConnectionStrings__DefaultConnection=Host=postgres;Database=ContasiscorpBD;Username=postgres;Password=root
     depends_on:
       postgres:
         condition: service_healthy

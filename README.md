@@ -85,18 +85,20 @@ El proyecto sigue Clean Architecture con las siguientes capas:
 
 2. **Configura PostgreSQL:**
    ```bash
-   # Crea la base de datos
-   createdb contasiscorp
+   # Crea la base de datos ContasiscorpBD
+   createdb -U postgres ContasiscorpBD
    ```
 
 3. **Configura la conexión en appsettings.Development.json:**
    ```json
    {
      "ConnectionStrings": {
-       "DefaultConnection": "Host=localhost;Database=contasiscorp;Username=postgres;Password=tu_password"
+       "DefaultConnection": "Host=localhost;Database=ContasiscorpBD;Username=postgres;Password=root"
      }
    }
    ```
+
+   **IMPORTANTE:** La base de datos se llama `ContasiscorpBD` y el password es `root`
 
 4. **Ejecuta las migraciones:**
    ```bash
